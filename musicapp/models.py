@@ -18,6 +18,6 @@ class Song(models.Model):
 	likes = models.ManyToManyField(User, blank=True)
 	artiste_id = models.ForeignKey(Artiste, on_delete=models.CASCADE)
 
-class Lyrics(models.Model):
+class Lyric(models.Model):
 	content = models.TextField()
 	song_id = models.ForeignKey(Song, on_delete=models.CASCADE)
