@@ -7,13 +7,12 @@ from .models import Artiste, Song
 
 # Create your views here.
 
-class SongAPIView(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+class SongAPIView(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
 	queryset = Song.objects.all()
 	serializer_class = SongSerializer
 	lookup_field = 'pk'
 
 	def perform_update(self, serializer):
-		print('hello')
 		date_released = serializer.validated_data.get('date_released') or None
 		print(date_released)
 		if date_released is None:
@@ -38,17 +37,17 @@ class SongAPIView(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.Creat
 	def put(self, request, *args, **kwargs):
 		obj = get_object_or_404(Song, pk=kwargs['pk'])
 		data = request.data
-		print(obj.date_released)
-		
-		print(data.get('date_released'))
 		date_released = data.get('date_released') or None
+		title = data.get('title') or None
 		if date_released is None:
 			date_released = obj.date_released
 			data['date_released'] = date_released
+		if title is None:
+			title = obj.title
+			data['title'] = title
 		serializer = SongSerializer(data=data, instance=obj)
 
 		if serializer.is_valid(raise_exception=True):
-			print('hello')
 			serializer.save(date_released=date_released)
 		return Response(serializer.data)
         
