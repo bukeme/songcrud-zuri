@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 
 User = settings.AUTH_USER_MODEL
@@ -17,7 +18,7 @@ class Artiste(models.Model):
 
 class Song(models.Model):
 	title = models.CharField(max_length=200)
-	date_released = models.DateTimeField()
+	date_released = models.DateTimeField(default=timezone.now)
 	likes = models.ManyToManyField(User, blank=True)
 	artiste_id = models.ForeignKey(Artiste, on_delete=models.CASCADE)
 
